@@ -23,9 +23,21 @@ public class ProfileController : ControllerBase
         _profileService = profileService;
         _mapper = mapper;
     }
-    
-    
+
+
+    /// <summary>
+    /// Retrieves a profile by username.
+    /// </summary>
+    /// <param name="username">The username of the profile to retrieve.</param>
+    /// <returns>The profile associated with the given username.</returns>
+    /// <response code="200">Returns the profile if found.</response>
+    /// <response code="400">If the request is invalid.</response>
+    /// <response code="404">If the profile is not found.</response>
     [HttpGet("{username}")]
+    [SwaggerOperation(Summary = "Get profile by username", Description = "Retrieves a profile by the specified username.")]
+    [SwaggerResponse(200, "Profile found", typeof(ProfileResource))]
+    [SwaggerResponse(400, "Invalid request", typeof(BadRequestResult))]
+    [SwaggerResponse(404, "Profile not found", typeof(NotFoundResult))]
     public async Task<IActionResult> GetProfileByUsernameAsync(string username)
     {
         if (!ModelState.IsValid)
@@ -36,6 +48,9 @@ public class ProfileController : ControllerBase
         return Ok(_mapper.Map<ProfileResource>(profile));
     }
     [HttpPost]
+    [SwaggerOperation(Summary = "Create new profile", Description = "Creates a new profile with the provided details.")]
+    [SwaggerResponse(201, "Profile created", typeof(ProfileResource))]
+    [SwaggerResponse(400, "Profile creation failed", typeof(BadRequestResult))]
     public async Task<IActionResult> CreateNewConferenceAsync([FromBody] CreateProfileResource resource)
     {
         if (!ModelState.IsValid)
@@ -51,6 +66,9 @@ public class ProfileController : ControllerBase
     }
     
     [HttpDelete("{id}")]
+    [SwaggerOperation(Summary = "Delete profile by ID", Description = "Deletes a profile with the specified ID.")]
+    [SwaggerResponse(204, "Profile deleted", typeof(NoContentResult))]
+    [SwaggerResponse(400, "Profile deletion failed", typeof(BadRequestResult))]
     public async Task<IActionResult> DeleteProfileByIdAsync(string id)
     {
         var command = new DeleteProfileCommand(id);
