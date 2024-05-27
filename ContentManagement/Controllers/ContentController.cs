@@ -19,6 +19,15 @@ namespace ContentManagement.Controllers
             _logger = logger;
             _db = db;
         }
+
+        /// <summary>
+        /// Retrieves a conference by ID.
+        /// </summary>
+        /// <param name="id">The id of the conference to retrieve.</param>
+        /// <returns>The conference associated with the given id.</returns>
+        /// <response code="200">Returns the conference if found.</response>
+        /// <response code="400">If the request is invalid.</response>
+        /// <response code="404">If the conference is not found.</response>
         
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -31,6 +40,10 @@ namespace ContentManagement.Controllers
 
         
         [HttpGet("id", Name = "GetConference")]
+        [SwaggerOperation(Summary = "Get conference by id", Description = "Retrieves a conference by the specified id.")]
+        [SwaggerResponse(200, "Conference found", typeof(ProfileResource))]
+        [SwaggerResponse(400, "Invalid request", typeof(BadRequestResult))]
+        [SwaggerResponse(404, "Conference not found", typeof(NotFoundResult))]
         public ActionResult<ConferenceDto> GetConferenceById(int id)
         {
             if (id <= 0) return BadRequest();
@@ -41,6 +54,9 @@ namespace ContentManagement.Controllers
         }
 
         [HttpPost]
+        [SwaggerOperation(Summary = "Create new conference", Description = "Creates a new conference with the provided details.")]
+        [SwaggerResponse(201, "Conference created", typeof(ProfileResource))]
+        [SwaggerResponse(400, "Conference creation failed", typeof(BadRequestResult))]
         public ActionResult<ConferenceDto> CreateConference([FromBody] ConferenceDto conferenceDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
