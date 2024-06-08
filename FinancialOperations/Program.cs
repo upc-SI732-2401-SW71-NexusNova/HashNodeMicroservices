@@ -6,43 +6,55 @@ using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add services to the container
 builder.Services.AddControllers();
 
+// Register Swagger services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new() { Title = "HashDev API Rest", Version = "v1" });
 });
 
+// Get the connection string from configuration
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// Register the PaymentDbContext with MySQL provider
 builder.Services.AddDbContext<PaymentDbContext>(options =>
 {
-    options.UseSqlServer(connectionString)
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
         .LogTo(Console.WriteLine, LogLevel.Information)
         .EnableSensitiveDataLogging()
         .EnableDetailedErrors();
 });
 
+// Register repositories and services
+builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+builder.Services.AddScoped<PaymentService>();
+
+// Configure routing to use lowercase URLs
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 var app = builder.Build();
 
+// Ensure the database is created
 using (var scope = app.Services.CreateScope())
-//using (var context = scope.ServiceProvider.GetRequiredService<AppDbContext>())
-//{
-//    context.Database.EnsureCreated();
-//}
+{
+    var context = scope.ServiceProvider.GetRequiredService<PaymentDbContext>();
+    context.Database.EnsureCreated();
+}
 
-    if (app.Environment.IsDevelopment())
+// Configure the HTTP request pipeline
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
     {
-        app.UseSwagger();
-        app.UseSwaggerUI();
-    }
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "HashDev API Rest v1");
+    });
+}
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

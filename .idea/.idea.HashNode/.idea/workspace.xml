@@ -5,6 +5,10 @@
     <projectFile profileName="IIS Express">AccessIdentityManagement/AccessIdentityManagement.csproj</projectFile>
     <projectFile profileName="http">AccessIdentityManagement/AccessIdentityManagement.csproj</projectFile>
     <projectFile profileName="https">AccessIdentityManagement/AccessIdentityManagement.csproj</projectFile>
+    <projectFile kind="Docker">ContentManagement/ContentManagement.csproj</projectFile>
+    <projectFile profileName="IIS Express">ContentManagement/ContentManagement.csproj</projectFile>
+    <projectFile profileName="http">ContentManagement/ContentManagement.csproj</projectFile>
+    <projectFile profileName="https">ContentManagement/ContentManagement.csproj</projectFile>
     <projectFile kind="Docker">FinancialOperations/FinancialOperations.csproj</projectFile>
     <projectFile profileName="IIS Express">FinancialOperations/FinancialOperations.csproj</projectFile>
     <projectFile profileName="http">FinancialOperations/FinancialOperations.csproj</projectFile>
@@ -14,7 +18,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b2d475e0-7757-4f7e-aa8c-66d89ffef4c3" name="Changes" comment="" />
+    <list default="true" id="0281891f-385a-4b48-a8c6-96ea7e30e394" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
