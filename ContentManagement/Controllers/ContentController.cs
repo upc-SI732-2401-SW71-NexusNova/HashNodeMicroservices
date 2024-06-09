@@ -4,6 +4,8 @@ using ContentManagement.ContentInfraestructure.Persistence;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace ContentManagement.Controllers
 {
@@ -31,23 +33,24 @@ namespace ContentManagement.Controllers
         
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<ConferenceDto>> GetConferences()
+        public async Task<ActionResult<IEnumerable<ConferenceDto>>> GetConferences()
         {
             _logger.LogInformation("Get conferences");
+            var conferences = await _db.Conferences.ToListAsync();
 
-            return Ok(_db.Conferences.ToList());
+            return Ok(conferences);
         }
 
         
         [HttpGet("id", Name = "GetConference")]
         [SwaggerOperation(Summary = "Get conference by id", Description = "Retrieves a conference by the specified id.")]
-        [SwaggerResponse(200, "Conference found", typeof(ProfileResource))]
+        [SwaggerResponse(200, "Conference found", typeof(ConferenceDto))]
         [SwaggerResponse(400, "Invalid request", typeof(BadRequestResult))]
         [SwaggerResponse(404, "Conference not found", typeof(NotFoundResult))]
-        public ActionResult<ConferenceDto> GetConferenceById(int id)
+        public async Task<ActionResult<ConferenceDto>> GetConferenceById(int id)
         {
             if (id <= 0) return BadRequest();
-            var conference = _db.Conferences.FirstOrDefault(c => c.Id == id);
+            var conference = await _db.Conferences.FirstOrDefaultAsync(c => c.Id == id);
 
             if (conference == null) return NotFound();
             return Ok(conference);
@@ -55,9 +58,9 @@ namespace ContentManagement.Controllers
 
         [HttpPost]
         [SwaggerOperation(Summary = "Create new conference", Description = "Creates a new conference with the provided details.")]
-        [SwaggerResponse(201, "Conference created", typeof(ProfileResource))]
+        [SwaggerResponse(201, "Conference created", typeof(ConferenceDto))]
         [SwaggerResponse(400, "Conference creation failed", typeof(BadRequestResult))]
-        public ActionResult<ConferenceDto> CreateConference([FromBody] ConferenceDto conferenceDto)
+        public async Task<ActionResult<ConferenceDto>> CreateConference([FromBody] ConferenceDto conferenceDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -69,11 +72,43 @@ namespace ContentManagement.Controllers
                 CreationDate = DateTime.Today
             };
 
-            _db.Conferences.Add(conference);
-            _db.SaveChanges();
+            await _db.Conferences.AddAsync(conference);
+            await _db.SaveChangesAsync();
 
             return CreatedAtRoute("GetConference", new { id = conference.Id }, conferenceDto);
         }
+        
+        [HttpGet("title", Name = "GetConferenceByTitle")]
+        [SwaggerOperation(Summary = "Get conference by title", Description = "Retrieves a conference by the specified title.")]
+        [SwaggerResponse(200, "Conference found", typeof(ConferenceDto))]
+        [SwaggerResponse(400, "Invalid request", typeof(BadRequestResult))]
+        [SwaggerResponse(404, "Conference not found", typeof(NotFoundResult))]
+        public async Task<ActionResult<ConferenceDto>> GetConferenceByTitle(String title)
+        {
+            if (title.Length == 0 || title.Equals(null)) return BadRequest();
+            var conference = await _db.Conferences.FirstOrDefaultAsync(c => c.Title.Contains(title));
+
+            if (conference == null) return NotFound();
+            return Ok(conference);
+        }
+        
+        [HttpDelete("id", Name = "DeleteConferenceById")]
+        [SwaggerOperation(Summary = "Get conference by title", Description = "Delete a conference by specified id")]
+        [SwaggerResponse(200, "Conference found", typeof(ConferenceDto))]
+        [SwaggerResponse(400, "Invalid request", typeof(BadRequestResult))]
+        [SwaggerResponse(404, "Conference not found", typeof(NotFoundResult))]
+        public async Task<ActionResult<ConferenceDto>> DeleteConferenceById(int id)
+        {
+            if (id <= 0) return BadRequest();
+            var conference = await _db.Conferences.FirstOrDefaultAsync(c => c.Id == id);
+            if (conference == null) return NotFound();
+            _db.Conferences.Remove(conference);
+            await _db.SaveChangesAsync();
+            
+            return Ok(conference);
+        }
+        
+        
 
         /*[HttpPatch("id")]
         public IActionResult UpdatePartialConference(int id, JsonPatchDocument<ConferenceDto> patchDto)
