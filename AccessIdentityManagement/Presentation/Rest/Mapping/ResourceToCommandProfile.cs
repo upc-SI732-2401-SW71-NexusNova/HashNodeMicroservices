@@ -8,8 +8,8 @@ public class ResourceToCommandProfile : Profile
 {
     public ResourceToCommandProfile()
     {
-        CreateMap<CreateUserResource, CreateUserCommand>();
-        CreateMap<UpdateUserResource, UpdateUserCommand>();
+        CreateMap<CreateProfileResource, CreateProfileCommand>();
+        CreateMap<UpdateProfileResource, UpdateProfileCommand>();
     }
     
 }

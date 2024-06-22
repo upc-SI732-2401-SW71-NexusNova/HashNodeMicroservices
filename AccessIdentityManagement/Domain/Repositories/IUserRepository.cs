@@ -13,5 +13,5 @@ public interface IUserRepository
     Task<User> FindUserByEmailAsync(string email);
     Task UpdateAsync(User updatedUser);
     Task DeleteAsync(User deleteUser);
-    
+    Task<User> FindUserByUsernameAsync(string queryUsername);
 }

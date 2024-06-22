@@ -1,4 +1,5 @@
 ﻿using HashNode.API.AccessIdentityManagement.Domain.Model.Entities;
+using HashNode.API.AccessIdentityManagement.infrastructure.Persistence.Data;
 using HashNode.API.Shared.Extensions;
 using HashNode.API.UserManagement.Domain.Model.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -18,8 +19,8 @@ namespace HashNode.API.Shared.Infrastructure.Persistence.Data
         {
             base.OnModelCreating(builder);
 
-
-            
+            builder.ApplyConfiguration(new UserEntityTypeConfiguration());
+            builder.ApplyConfiguration(new ProfileEntityTypeConfiguration());
 
 
 

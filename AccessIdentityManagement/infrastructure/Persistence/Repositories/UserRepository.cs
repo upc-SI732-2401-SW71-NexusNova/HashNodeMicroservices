@@ -46,6 +46,11 @@ public class UserRepository : BaseRepository, IUserRepository
         await _context.SaveChangesAsync();
     }
 
+    public async Task<User> FindUserByUsernameAsync(string username)
+    {
+        return await _context.Users.SingleOrDefaultAsync(e => e.Username == username);
+    }
+
     public bool UserExists(string userId)
     {
         return _context.Users.Any(e => e.Id == userId);

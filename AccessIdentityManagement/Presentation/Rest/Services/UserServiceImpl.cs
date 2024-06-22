@@ -37,14 +37,18 @@ public class UserServiceImpl : IUserService
     {
         return _queryService.handle(new GetUserByIdQuery(userId));
     }
-
-    public Task<User> GetUserByTitle(string title)
+    public Task<User> GetUserByUserName(string userName)
     {
-        throw new NotImplementedException();
+        return _queryService.handle(new GetUserByUsername(userName));
+    }
+
+    public Task<User> GetUserByTitle(string email)
+    {
+        return _queryService.handle(new GetUserByTitleQuery(email));
     }
 
     public Task<IEnumerable<User>> GetAllUsers()
     {
-        throw new NotImplementedException();
+        return _queryService.handle(new GetAllUserQuery());
     }
 }

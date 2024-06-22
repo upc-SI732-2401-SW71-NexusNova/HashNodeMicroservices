@@ -43,6 +43,17 @@ public class UserController : ControllerBase
             return NotFound();
         return Ok(_mapper.Map<UserResource>(user));
     }
+    
+    [HttpGet("username/{username}")]
+    public async Task<IActionResult> GetUserByUserNameAsync(string username)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState.GetErrorMessages());
+        var user = await _userService.GetUserByUserName(username);
+        if (user == null)
+            return NotFound();
+        return Ok(user);
+    }
 
     [HttpPost]
     public async Task<IActionResult> CreateNewUserAsync([FromBody] CreateUserResource resource)
@@ -56,7 +67,7 @@ public class UserController : ControllerBase
         if (!response.Success)
             return BadRequest(response.Message);
         var userResource = _mapper.Map<User, UserResource>(response.Resource);
-        return Created(nameof(CreateNewUserAsync), userResource);
+        return Created(nameof(CreateNewUserAsync), response.Resource);
     }
 
     [HttpPut("{id}")]

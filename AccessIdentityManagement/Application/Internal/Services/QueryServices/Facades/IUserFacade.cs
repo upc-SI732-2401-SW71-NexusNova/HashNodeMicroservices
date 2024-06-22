@@ -8,7 +8,8 @@ public interface IUserFacade
     Task<User> GetUserByIdAsync(string userId);
     Task<User> GetUserByEmailAsync(string email);
     Task<IEnumerable<User>> GetAllUsersAsync();
-    
+
+    Task<User> GetUserByUsernameAsync(string queryUsername);
 }
 
 public class UserFacade : IUserFacade
@@ -33,5 +34,10 @@ public class UserFacade : IUserFacade
     public async Task<IEnumerable<User>> GetAllUsersAsync()
     {
         return await _userRepository.ListAllUsersAsync();
+    }
+
+    public async Task<User> GetUserByUsernameAsync(string queryUsername)
+    {
+        return await _userRepository.FindUserByUsernameAsync(queryUsername);
     }
 }

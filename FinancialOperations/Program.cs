@@ -22,10 +22,11 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 // Register the PaymentDbContext with MySQL provider
 builder.Services.AddDbContext<PaymentDbContext>(options =>
 {
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
+    /*options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
         .LogTo(Console.WriteLine, LogLevel.Information)
         .EnableSensitiveDataLogging()
-        .EnableDetailedErrors();
+        .EnableDetailedErrors();*/
+    options.UseSqlServer(connectionString);
 });
 
 // Register repositories and services

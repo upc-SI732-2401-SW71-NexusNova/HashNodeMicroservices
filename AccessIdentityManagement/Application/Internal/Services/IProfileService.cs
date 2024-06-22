@@ -10,7 +10,8 @@ public interface IProfileService
     Task<ProfileResponse> CreateProfile(CreateProfileCommand command);
     Task<ProfileResponse> UpdateProfile(string id, UpdateProfileCommand command);
     Task<ProfileResponse> DeleteProfile(DeleteProfileCommand command);
-    Task<AutoMapper.Profile> GetProfileById(string profileId);
+    Task<Profile> GetProfileById(string profileId);
     Task<Profile> GetProfileByTitle(string title);
+    Task<Profile> GetProfileByUsername(string title);
     Task<IEnumerable<Profile>> GetAllProfiles();
 }

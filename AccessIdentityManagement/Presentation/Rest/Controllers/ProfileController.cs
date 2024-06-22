@@ -2,6 +2,7 @@ using System.Net.Mime;
 using AutoMapper;
 using HashNode.API.AccessIdentityManagement.Application.Internal.Services;
 using HashNode.API.AccessIdentityManagement.Domain.Commands;
+using HashNode.API.AccessIdentityManagement.Domain.Services.Communication;
 using HashNode.API.AccessIdentityManagement.Presentation.Rest.Mapping.Resources;
 using HashNode.API.Shared.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -42,16 +43,16 @@ public class ProfileController : ControllerBase
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState.GetErrorMessages());
-        var profile = await _profileService.GetAllProfiles();
+        var profile = await _profileService.GetProfileByUsername(username);
         if (profile == null)
             return NotFound();
-        return Ok(_mapper.Map<ProfileResource>(profile));
+        return Ok(profile);
     }
     [HttpPost]
     [SwaggerOperation(Summary = "Create new profile", Description = "Creates a new profile with the provided details.")]
     [SwaggerResponse(201, "Profile created", typeof(ProfileResource))]
     [SwaggerResponse(400, "Profile creation failed", typeof(BadRequestResult))]
-    public async Task<IActionResult> CreateNewConferenceAsync([FromBody] CreateProfileResource resource)
+    public async Task<IActionResult> CreateNewProfileAsync([FromBody] CreateProfileResource resource)
     {
         if (!ModelState.IsValid)
         {
@@ -61,8 +62,7 @@ public class ProfileController : ControllerBase
         var response = await _profileService.CreateProfile(command);
         if (!response.Success)
             return BadRequest(response.Message);
-        var conferenceResource = _mapper.Map<Profile, ProfileResource>(response.Resource);
-        return Created(nameof(CreateNewConferenceAsync), conferenceResource);
+        return Created(nameof(CreateNewProfileAsync), response.Resource);
     }
     
     [HttpDelete("{id}")]

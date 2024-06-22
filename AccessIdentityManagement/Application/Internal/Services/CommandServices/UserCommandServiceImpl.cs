@@ -20,6 +20,11 @@ public class UserCommandServiceImpl : IUserCommandService
     public async Task<UserResponse> handle(CreateUserCommand command)
     {
         var newUser = userFactory.CreateUser(command);
+        var userWithSameUsername = await userRepository.FindUserByUsernameAsync(command.Username);
+        if (userWithSameUsername != null)
+        {
+            return new UserResponse($"An user with {command.Username} username already exists");
+        }
         try
         {
             await userRepository.CreateUserAsync(newUser);

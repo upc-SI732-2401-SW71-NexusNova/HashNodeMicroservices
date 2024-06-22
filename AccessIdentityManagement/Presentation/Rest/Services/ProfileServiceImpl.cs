@@ -34,14 +34,14 @@ public class ProfileServiceImpl : IProfileService
         return _commandService.handle(command);
     }
 
-    public Task<AutoMapper.Profile> GetProfileById(string profileId)
+    public Task<Profile> GetProfileById(string profileId)
     {
         return _queryService.handle(new GetProfileByIdQuery(profileId));
     }
 
-    public Task<Profile> GetProfileByTitle(string title)
+    public Task<Profile> GetProfileByTitle(string username)
     {
-        throw new NotImplementedException();
+        return _queryService.handle(new GetProfileByTitleQuery(username));
     }
 
     public Task<Profile> GetProfileByUsername(string username)
@@ -53,4 +53,5 @@ public class ProfileServiceImpl : IProfileService
     {
         return _queryService.handle(new GetAllProfileQuery());
     }
+    
 }

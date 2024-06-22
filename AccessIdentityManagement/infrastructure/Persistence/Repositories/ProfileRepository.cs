@@ -40,11 +40,6 @@ public class ProfileRepository : BaseRepository, IProfileRepository
         return await _context.Profiles.ToListAsync();
     }
 
-    public Task CreateProfileAsync(AutoMapper.Profile newProfile)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task CreateProfileAsync(Profile newProfile)
     {
         await _context.Profiles.AddAsync(newProfile);

@@ -8,6 +8,6 @@ public class ModelToResourceProfile : Profile
 {
     public ModelToResourceProfile()
     {
-        CreateMap<User, UserResource>();
+        CreateMap<Profile, ProfileResource>();
     }
 }
