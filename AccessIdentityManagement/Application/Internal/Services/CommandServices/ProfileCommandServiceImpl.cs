@@ -12,26 +12,18 @@ public class ProfileCommandServiceImpl : IProfileCommandService
     private readonly IProfileRepository _profileRepository;
     private readonly IMapper _mapper;
     private readonly IProfileFactory _profileFactory;
-    private readonly IUserRepository _userRepository;
     
-    public ProfileCommandServiceImpl(IProfileRepository profileRepository, IMapper mapper, IProfileFactory profileFactory,
-        IUserRepository userRepository)
+    public ProfileCommandServiceImpl(IProfileRepository profileRepository, IMapper mapper, IProfileFactory profileFactory)
     {
         _profileRepository = profileRepository;
         _mapper = mapper;
         _profileFactory = profileFactory;
-        _userRepository = userRepository;
     }
     
     
     public async Task<ProfileResponse> handle(CreateProfileCommand command)
     {
         var newProfile = _profileFactory.CreateProfile(command);
-        var userExists = await _userRepository.FindUserByIdAsync(command.Id);
-        if (userExists == null)
-        {
-            return new ProfileResponse($"An user with {command.Id} id does not exist");
-        }
         try
         {
             await _profileRepository.CreateProfileAsync(newProfile);

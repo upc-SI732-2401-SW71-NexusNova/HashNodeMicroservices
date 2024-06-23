@@ -9,6 +9,7 @@ public interface IProfileRepository
     Task CreateProfileAsync(Model.Entities.Profile newProfile);
     bool ProfileExists(string profileId);
     Task<Model.Entities.Profile> FindProfileByIdAsync(string profileId);
+    Task<Model.Entities.Profile> FindProfileByUsernameAsync(string username);
     Task<Model.Entities.Profile> FindProfileByUserIdAsync(string userId);
     Task UpdateAsync(Model.Entities.Profile updatedProfile);
     Task DeleteAsync(Model.Entities.Profile deleteProfile);

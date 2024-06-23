@@ -15,7 +15,7 @@ public class ProfileFactory : IProfileFactory
     public Profile CreateProfile(CreateProfileCommand command)
     {
         var profile = new Profile(
-            id: command.Id,
+            username: command.Username,
             fullName: command.FullName,
             bio: command.Bio,
             profilePictureUrl: command.ProfilePictureUrl,

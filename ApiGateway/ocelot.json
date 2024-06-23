@@ -1,0 +1,164 @@
+{
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/api/Account",
+      "UpstreamHttpMethod": ["Post"],
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "authenticationapi",
+          "Port": 8080
+        }
+      ],
+      "DownstreamPathTemplate": "/api/Account"
+    },
+
+
+    
+    {
+      "UpstreamPathTemplate": "/api/v1/profile/{username}",
+      "UpstreamHttpMethod": ["Get"],
+
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "identityaccessapi",
+          "Port": 8080
+        }
+      ],
+      "DownstreamPathTemplate": "/api/v1/profile/{username}",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/v1/profile",
+      "UpstreamHttpMethod": ["Post"],
+
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "identityaccessapi",
+          "Port": 8080
+        }
+      ],
+      "DownstreamPathTemplate": "/api/v1/profile",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/v1/profile/{id}",
+      "UpstreamHttpMethod": ["Delete"],
+
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "identityaccessapi",
+          "Port": 8080
+        }
+      ],
+      "DownstreamPathTemplate": "/api/v1/profile/{id}",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+
+
+
+    {
+      "UpstreamPathTemplate": "/api/payment",
+      "UpstreamHttpMethod": ["Get", "Post"],
+
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "financialoperationsapi",
+          "Port": 8080
+        }
+      ],
+      "DownstreamPathTemplate": "/api/payment",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/payment/{id}",
+      "UpstreamHttpMethod": ["Get", "Put"],
+
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "financialoperationsapi",
+          "Port": 8080
+        }
+      ],
+      "DownstreamPathTemplate": "/api/payment/{id}",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+
+
+
+    {
+      "UpstreamPathTemplate": "/api/conferences",
+      "UpstreamHttpMethod": ["Get", "Post"],
+
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "conferenceapi",
+          "Port": 8080
+        }
+      ],
+      "DownstreamPathTemplate": "/api/conferences",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/conferences/{id}",
+      "UpstreamHttpMethod": ["Get", "Delete"],
+
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "conferenceapi",
+          "Port": 8080
+        }
+      ],
+      "DownstreamPathTemplate": "/api/conferences/{id}",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/conferences/title/{title}",
+      "UpstreamHttpMethod": ["Get"],
+
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "conferenceapi",
+          "Port": 8080
+        }
+      ],
+      "DownstreamPathTemplate": "/api/conferences/title/{title}",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:20000"
+  }
+}

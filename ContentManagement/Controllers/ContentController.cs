@@ -42,7 +42,7 @@ namespace ContentManagement.Controllers
         }
 
         
-        [HttpGet("id", Name = "GetConference")]
+        [HttpGet("{id}", Name = "GetConference")]
         [SwaggerOperation(Summary = "Get conference by id", Description = "Retrieves a conference by the specified id.")]
         [SwaggerResponse(200, "Conference found", typeof(ConferenceDto))]
         [SwaggerResponse(400, "Invalid request", typeof(BadRequestResult))]
@@ -78,7 +78,7 @@ namespace ContentManagement.Controllers
             return CreatedAtRoute("GetConference", new { id = conference.Id }, conferenceDto);
         }
         
-        [HttpGet("title", Name = "GetConferenceByTitle")]
+        [HttpGet("title/{title}", Name = "GetConferenceByTitle")]
         [SwaggerOperation(Summary = "Get conference by title", Description = "Retrieves a conference by the specified title.")]
         [SwaggerResponse(200, "Conference found", typeof(ConferenceDto))]
         [SwaggerResponse(400, "Invalid request", typeof(BadRequestResult))]
@@ -92,7 +92,7 @@ namespace ContentManagement.Controllers
             return Ok(conference);
         }
         
-        [HttpDelete("id", Name = "DeleteConferenceById")]
+        [HttpDelete("{id}", Name = "DeleteConferenceById")]
         [SwaggerOperation(Summary = "Get conference by title", Description = "Delete a conference by specified id")]
         [SwaggerResponse(200, "Conference found", typeof(ConferenceDto))]
         [SwaggerResponse(400, "Invalid request", typeof(BadRequestResult))]
@@ -107,15 +107,5 @@ namespace ContentManagement.Controllers
             
             return Ok(conference);
         }
-        
-        
-
-        /*[HttpPatch("id")]
-        public IActionResult UpdatePartialConference(int id, JsonPatchDocument<ConferenceDto> patchDto)
-        {
-            if (patchDto == null || id == 0) return BadRequest();
-            
-            
-        }*/
     }
 }

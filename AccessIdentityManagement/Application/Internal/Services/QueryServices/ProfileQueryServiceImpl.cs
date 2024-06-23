@@ -10,12 +10,11 @@ namespace HashNode.API.AccessIdentityManagement.Application.Internal.Services.Qu
 public class ProfileQueryServiceImpl: IProfileQueryService
 {
     private readonly IProfileFacade _profileFacade;
-    private readonly IUserFacade _userFacade;
 
-    public ProfileQueryServiceImpl(IProfileFacade profileFacade, IUserFacade userFacade)
+
+    public ProfileQueryServiceImpl(IProfileFacade profileFacade)
     {
         _profileFacade = profileFacade;
-        _userFacade = userFacade;
     }
     public async Task<Domain.Model.Entities.Profile> handle(GetProfileByIdQuery query)
     {
@@ -24,9 +23,7 @@ public class ProfileQueryServiceImpl: IProfileQueryService
 
     public async Task<Domain.Model.Entities.Profile> handle(GetProfileByTitleQuery query)
     {
-        var user = await _userFacade.GetUserByUsernameAsync(query.ProfileTitle);
-        if (user == null) return null;
-        return await _profileFacade.GetProfileByTitleAsync(user.Id);
+        return await _profileFacade.GetProfileByTitleAsync(query.ProfileTitle);
     }
 
     public async Task<IEnumerable<Domain.Model.Entities.Profile>> handle(GetAllProfileQuery query)

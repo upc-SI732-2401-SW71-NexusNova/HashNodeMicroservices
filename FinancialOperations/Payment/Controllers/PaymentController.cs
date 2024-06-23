@@ -1,4 +1,5 @@
 ﻿using FinancialOperations.Payment.Application.Services;
+using FinancialOperations.Payment.Resources;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinancialOperations.Payment.Controllers;
@@ -35,16 +36,16 @@ public class PaymentController : ControllerBase
 
 
     [HttpPost]
-    public async Task<IActionResult> CreatePayment(float amount, string currency, string cardNumber, string cardCvv)
+    public async Task<IActionResult> CreatePayment([FromBody] PaymentResource resource)
     {
-        var payment = await _paymentService.CreatePaymentAsync(amount, currency, cardNumber, cardCvv);
+        var payment = await _paymentService.CreatePaymentAsync(resource.amount, resource.currency, resource.cardNumber, resource.cardCvv);
         return Ok(payment);
     }
     
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdatePayment(int id, float amount, string currency, string cardNumber, string cardCvv)
+    public async Task<IActionResult> UpdatePayment([FromBody] PaymentPutResource resource)
     {
-        var updatedPayment = await _paymentService.UpdatePaymentAsync(id, amount, currency, cardNumber, cardCvv);
+        var updatedPayment = await _paymentService.UpdatePaymentAsync(resource.id, resource.amount, resource.currency, resource.cardNumber, resource.cardCvv);
         if (updatedPayment == null)
         {
             return NotFound();

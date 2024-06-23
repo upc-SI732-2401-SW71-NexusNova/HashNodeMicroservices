@@ -1,0 +1,93 @@
+version: '3.8'
+
+services:
+  sql-conference-server:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sql-server-conference-container
+    environment:
+      SA_PASSWORD: "TuPasswordSuperSeguro123!"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    networks:
+      - nexusnovanet
+  
+  sql-identity-server:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sql-server-identity-container
+    environment:
+      SA_PASSWORD: "TuPasswordSuperSeguro123!"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1533:1433"
+    networks:
+      - nexusnovanet
+  
+  sql-payment-server:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sql-server-payment-container
+    environment:
+      SA_PASSWORD: "TuPasswordSuperSeguro123!"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1633:1433"
+    networks:
+      - nexusnovanet
+  
+  conferenceapi:
+    image: conferenceapi
+    build:
+      context: ./ContentManagement
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    networks:
+      - nexusnovanet
+  
+  identityaccessapi:
+    image: identityaccesapi
+    build:
+      context: ./AccessIdentityManagement
+      dockerfile: Dockerfile
+    ports:
+      - "8180:8080"
+      - "8181:8081"
+    networks: 
+      - nexusnovanet
+
+  financialoperationsapi:
+    image: finantialoperationsapi
+    build:
+      context: ./FinancialOperations
+      dockerfile: Dockerfile
+    ports:
+      - "8280:8080"
+      - "8281:8081"
+    networks: 
+      - nexusnovanet
+    
+  apigateway:
+    image: apigateway
+    build:
+      context: .
+      dockerfile: ApiGateway/Dockerfile
+    ports:
+      - "20000:8080"
+    networks:
+      - nexusnovanet
+
+  authenticationapi:
+    image: authenticationapi
+    build:
+      context: .
+      dockerfile: AuthenticationWebApi/Dockerfile
+    ports:
+      - "8380:8080"
+      - "8381:8081"
+    networks: 
+      - nexusnovanet
+      
+networks:
+  nexusnovanet:
+    driver: bridge

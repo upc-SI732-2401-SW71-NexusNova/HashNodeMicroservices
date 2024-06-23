@@ -27,7 +27,7 @@ public class ProfileFacade : IProfileFacade
 
     public async Task<Profile> GetProfileByTitleAsync(string title)
     {
-        return await _profileRepository.FindProfileByUserIdAsync(title);
+        return await _profileRepository.FindProfileByUsernameAsync(title);
     }
 
     public async Task<IEnumerable<Profile>> GetAllProfilesAsync()

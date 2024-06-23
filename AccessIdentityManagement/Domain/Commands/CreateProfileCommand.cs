@@ -1,11 +1,6 @@
 namespace HashNode.API.AccessIdentityManagement.Domain.Commands;
 
-public record CreateProfileCommand( string Id, string FullName, string Bio, string ProfilePictureUrl, string Location, string Website, string Github)
+public record CreateProfileCommand( string Id, string Username,string FullName, string Bio, string ProfilePictureUrl, string Location, string Website, string Github)
 {
-   
- 
-    
-  
 
-    
 }

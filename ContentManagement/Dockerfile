@@ -9,10 +9,10 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["ContentManagement/ContentManagement.csproj", "ContentManagement/"]
-RUN dotnet restore "./ContentManagement/ContentManagement.csproj"
+COPY ["ContentManagement.csproj", "."]
+RUN dotnet restore "./ContentManagement.csproj"
 COPY . .
-WORKDIR "/src/ContentManagement"
+WORKDIR "/src/."
 RUN dotnet build "./ContentManagement.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
@@ -22,4 +22,4 @@ RUN dotnet publish "./ContentManagement.csproj" -c $BUILD_CONFIGURATION -o /app/
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "ContentManagement.dll"]
+ENTRYPOINT ["dotnet", "ContentManagement.dll"]  

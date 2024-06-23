@@ -19,7 +19,12 @@ public class ProfileRepository : BaseRepository, IProfileRepository
     {
         return await _context.Profiles.FindAsync(id);
     }
-    
+
+    public async Task<Profile> FindProfileByUsernameAsync(string username)
+    {
+        return await _context.Profiles.SingleOrDefaultAsync(p => p.Username == username);
+    }
+
     public async Task<Profile> FindProfileByUserIdAsync(string userId)
     {
         return await _context.Profiles.SingleOrDefaultAsync(e => e.Id == userId);

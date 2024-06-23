@@ -26,7 +26,7 @@ builder.Services.AddDbContext<PaymentDbContext>(options =>
         .LogTo(Console.WriteLine, LogLevel.Information)
         .EnableSensitiveDataLogging()
         .EnableDetailedErrors();*/
-    options.UseSqlServer(connectionString);
+    options.UseSqlServer(connectionString, option => option.EnableRetryOnFailure());
 });
 
 // Register repositories and services
@@ -46,14 +46,14 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Configure the HTTP request pipeline
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "HashDev API Rest v1");
     });
-}
+//}
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
